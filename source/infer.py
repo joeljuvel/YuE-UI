@@ -108,7 +108,7 @@ class PostProcessor:
         model_config = OmegaConf.load(config.basic_model_config)
         assert model_config.generator.name == "SoundStream"
         self._codec_model = SoundStream(**model_config.generator.config).to(self._device)
-        parameter_dict = torch.load(config.resume_path, map_location=self._device, weights_only=False)
+        parameter_dict = torch.load(config.resume_path, map_location=self._device, weights_only=True)
         self._codec_model.load_state_dict(parameter_dict["codec_model"])
         self._codec_model.eval()
 
@@ -355,7 +355,7 @@ def import_audio_tracks(
         model_config = OmegaConf.load(config.basic_model_config)
         assert model_config.generator.name == "SoundStream"
         codec_model = SoundStream(**model_config.generator.config).to(device)
-        parameter_dict = torch.load(config.resume_path, map_location=device, weights_only=False)
+        parameter_dict = torch.load(config.resume_path, map_location=device, weights_only=True)
         codec_model.load_state_dict(parameter_dict["codec_model"])
         codec_model.eval()
         del parameter_dict
